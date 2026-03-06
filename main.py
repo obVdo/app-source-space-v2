@@ -82,7 +82,12 @@ add_info_to_product(report_items, f"Subject: {subject} | subjects_dir: {subjects
 # spacing: 'oct6' → 4098 sources/hemisphere (recommended for real analyses)
 #          'oct5' → 1026 sources/hemisphere (faster)
 #          'oct4' → 258 sources/hemisphere (testing only)
-spacing = config.get('spacing') or 'oct6'
+spacing_raw = config.get('spacing') or 'oct6'
+# If user entered a number (mm distance), convert to int so MNE accepts it
+try:
+    spacing = int(spacing_raw)
+except (ValueError, TypeError):
+    spacing = spacing_raw  # keep as string ('oct6', 'ico5', etc.)
 surface = config.get('surface') or 'white'
 
 # add_dist: False = no distance/patch info (fastest, avoids scikit-learn)

@@ -79,16 +79,20 @@ if not os.path.isdir(os.path.join(subjects_dir, subject)):
 add_info_to_product(report_items, f"Subject: {subject} | subjects_dir: {subjects_dir}", "info")
 
 # == PARAMETERS ==
-# spacing: 'oct6' → 4098 sources/hemisphere (recommended for real analyses)
-#          'oct5' → 1026 sources/hemisphere (faster)
-#          'oct4' → 258 sources/hemisphere (testing only)
+# spacing options:
+#   'oct6' → 4098 sources/hemi  (recommended)
+#   'oct5' → 1026 sources/hemi  (faster)
+#   'oct4' →  258 sources/hemi  (testing only)
+#   'ico5' → 10242 sources/hemi (high density)
+#   'all'  → all vertices (~150k/hemi, very slow)
+#   '10'   → ~10mm grid spacing (distance-based, integer as string)
 spacing_raw = config.get('spacing') or 'oct6'
 # If user entered a number (mm distance), convert to int so MNE accepts it
 try:
     spacing = int(spacing_raw)
 except (ValueError, TypeError):
     spacing = spacing_raw  # keep as string ('oct6', 'ico5', etc.)
-surface = config.get('surface') or 'white'
+surface = 'white'
 
 # add_dist: False = no distance/patch info (fastest, avoids scikit-learn)
 #           'patch' = patch info only (needs SciPy >=1.3, recommended)

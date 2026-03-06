@@ -85,9 +85,20 @@ add_info_to_product(report_items, f"Subject: {subject} | subjects_dir: {subjects
 spacing = config.get('spacing') or 'oct6'
 surface = config.get('surface') or 'white'
 
+# add_dist: False = no distance/patch info (fastest, avoids scikit-learn)
+#           'patch' = patch info only (needs SciPy >=1.3, recommended)
+#           True = full distance + patch (slowest, needs scikit-learn)
+add_dist_raw = config.get('add_dist') or 'patch'
+if add_dist_raw in (True, 'true', 'True', '1'):
+    add_dist = True
+elif add_dist_raw in (False, 'false', 'False', '0', 'none', 'None', ''):
+    add_dist = False
+else:
+    add_dist = add_dist_raw  # 'patch' or other string passed directly
+
 add_info_to_product(
     report_items,
-    f"Source space parameters: spacing={spacing} | surface={surface}",
+    f"Source space parameters: spacing={spacing} | surface={surface} | add_dist={add_dist}",
     "info"
 )
 
@@ -98,7 +109,7 @@ try:
         spacing=spacing,
         surface=surface,
         subjects_dir=subjects_dir,
-        add_dist=False,  # avoids scikit-learn dependency; small impact (r~0.94)
+        add_dist=add_dist,
         verbose=True
     )
     n_sources = sum(s['nuse'] for s in src)

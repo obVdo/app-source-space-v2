@@ -88,7 +88,7 @@ surface = config.get('surface') or 'white'
 # add_dist: False = no distance/patch info (fastest, avoids scikit-learn)
 #           'patch' = patch info only (needs SciPy >=1.3, recommended)
 #           True = full distance + patch (slowest, needs scikit-learn)
-add_dist_raw = config.get('add_dist') or 'patch'
+add_dist_raw = config.get('add_dist') or 'false'
 if add_dist_raw in (True, 'true', 'True', '1'):
     add_dist = True
 elif add_dist_raw in (False, 'false', 'False', '0', 'none', 'None', ''):
